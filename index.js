@@ -1,6 +1,9 @@
 const { Command } = require('commander');
 const mongoose = require('mongoose');
+const express = require('express');
 const program = new Command();
+const app = express();
+const port = 3000;
 
 const AuctionItem = mongoose.model('AuctionItem', new mongoose.Schema({
   title: String,
@@ -9,7 +12,8 @@ const AuctionItem = mongoose.model('AuctionItem', new mongoose.Schema({
   reserve_price: Number
 }));
 
-mongoose.connect('mongodb://localhost:27017/auction', { useNewUrlParser: true, useUnifiedTopology: true });
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/auction');
 
 program
   .command('seed')
@@ -22,7 +26,7 @@ program
     ];
     await AuctionItem.insertMany(data);
     console.log('Data seeded!');
-    mongoose.connection.close();
+    mongoose.connection.close(); // Close connection after seeding
   });
 
 program
@@ -31,7 +35,37 @@ program
   .action(async () => {
     await AuctionItem.deleteMany({});
     console.log('Data deleted!');
-    mongoose.connection.close();
+    mongoose.connection.close(); // Close connection after deleting
   });
 
-program.parse(process.argv);
+if (process.argv.includes('start-server')) {
+  // Start the server if 'start-server' command is passed
+  app.get('/api/search', async (req, res) => {
+    console.log("Search API has been hit!")
+    const { query } = req.query;
+
+    if (!query) {
+      return res.status(400).send('Query parameter is required');
+    }
+    
+    try {
+      const items = await AuctionItem.find({
+        $or: [
+          { title: new RegExp(query, 'i') },
+          { description: new RegExp(query, 'i') }
+        ]
+      });
+
+      res.json(items);
+    } catch (err) {
+      res.status(500).send(err.message);
+    }
+  });
+
+  app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  });
+} else {
+  // Parse CLI commands
+  program.parse(process.argv);
+}
