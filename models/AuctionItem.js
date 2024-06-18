@@ -1,14 +1,12 @@
-const mongoose = require('../db');
+const mongoose = require('mongoose');
 
-const auctionItemSchema = new mongoose.Schema({
+const AuctionItemSchema = new mongoose.Schema({
   title: String,
   description: String,
-  price: Number,
-  category: String,
-  tags: [String],
-  createdAt: { type: Date, default: Date.now },
+  start_price: Number,
+  reserve_price: Number
 });
 
-const AuctionItem = mongoose.model('AuctionItem', auctionItemSchema);
+const AuctionItem = mongoose.model('AuctionItem', AuctionItemSchema);
 
 module.exports = AuctionItem;

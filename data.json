@@ -1,5 +1,0 @@
-[
-  { "title": "Vintage Clock", "description": "An antique clock.", "start_price": 100, "reserve_price": 150 },
-  { "title": "Painting", "description": "A beautiful painting.", "start_price": 200, "reserve_price": 300 },
-  { "title": "Sculpture", "description": "A modern sculpture.", "start_price": 300, "reserve_price": 450 }
-]
