@@ -1,8 +1,11 @@
 {
   "name": "mr-m5-p1-node-cli",
   "version": "1.0.0",
-  "description": "��#\u0000 \u0000m\u0000r\u0000-\u0000m\u00005\u0000-\u0000p\u00001\u0000-\u0000n\u0000o\u0000d\u0000e\u0000-\u0000c\u0000l\u0000i\u0000\r\u0000 \u0000",
+  "description": "A CLI tool for managing auction items",
   "main": "index.js",
+  "bin": {
+    "db": "./bin/cli.js"
+  },
   "scripts": {
     "dev": "nodemon index.js start-server"
   },
@@ -10,7 +13,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^4.1.2",
     "commander": "^12.1.0",
+    "conf": "^13.0.1",
     "express": "^4.19.2",
     "mongoose": "^8.4.1",
     "nodemon": "^3.1.3"
